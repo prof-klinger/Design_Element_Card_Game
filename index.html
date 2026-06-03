@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zufallsbild-Generator mit Countdown</title>
+    <title>Designelements</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Strichpunkt+Sans:wght@400;700&display=swap');
+        
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Strichpunkt Sans', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -20,21 +22,42 @@
         body.time-up {
             background-color: #ffcccc;
         }
-        h1 {
-            margin-bottom: 10px;
+        .title-container {
             text-align: center;
+            margin-bottom: 20px;
         }
-        .score {
+        .title-container h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .title-container h2 {
+            margin: 5px 0 0;
+            font-size: 18px;
+            font-weight: 400;
+            color: #666;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 360px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .timer, .score {
             font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #2e6da4;
+            font-weight: 700;
         }
         .timer {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
             color: #d9534f;
+        }
+        .score {
+            color: #2e6da4;
         }
         .card-container {
             width: 360px;
@@ -42,6 +65,7 @@
             perspective: 1000px;
             cursor: pointer;
             transition: transform 0.3s;
+            margin-bottom: 15px;
         }
         .card-container:hover {
             transform: scale(1.05);
@@ -74,29 +98,39 @@
             transform: rotateY(180deg);
         }
         .instruction {
-            margin-top: 10px;
+            margin-top: 0;
             text-align: center;
             font-style: italic;
             color: #666;
+            font-size: 14px;
         }
         @media (max-width: 600px) {
-            .card-container {
+            .card-container, .game-container {
                 width: 300px;
-                height: 441px;
+            }
+            .header {
+                width: 300px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Zufallsbild-Generator</h1>
-    <div class="score">Punkte: <span id="score">0</span></div>
-    <div class="timer" id="timer">00:10</div>
-    <p class="instruction">Klicke auf die Karte, um ein zufälliges Bild anzuzeigen</p>
-    <div class="card-container" onclick="showRandomImage()">
-        <div class="card-wrapper" id="cardWrapper">
-            <div class="card card-front" id="cardFront" style="background-image: url('20260603_Spielkartengestaltung00.png');"></div>
-            <div class="card card-back" style="background-image: url('20260603_Spielkartengestaltung00.png');"></div>
+    <div class="game-container">
+        <div class="title-container">
+            <h1>Designelements</h1>
+            <h2>The Card Game</h2>
         </div>
+        <div class="header">
+            <div class="timer" id="timer">03:00</div>
+            <div class="score">Punkte: <span id="score">0</span></div>
+        </div>
+        <div class="card-container" onclick="showRandomImage()">
+            <div class="card-wrapper" id="cardWrapper">
+                <div class="card card-front" id="cardFront" style="background-image: url('./20260603_Spielkartengestaltung00.png');"></div>
+                <div class="card card-back" style="background-image: url('./20260603_Spielkartengestaltung00.png');"></div>
+            </div>
+        </div>
+        <p class="instruction">Klicke auf die Karte, um ein zufälliges Bild anzuzeigen</p>
     </div>
 
     <script>
@@ -104,12 +138,12 @@
         const images = [];
         for (let i = 1; i <= 30; i++) {
             const paddedNumber = String(i).padStart(2, '0');
-            images.push(`20260603_Spielkartengestaltung${paddedNumber}.png`);
+            images.push(`./20260603_Spielkartengestaltung${paddedNumber}.png`);
         }
 
         // Timer-Variablen
         let countdown;
-        let timeLeft = 10; // 10 Sekunden
+        let timeLeft = 180; // 3 Minuten in Sekunden
         let score = 0;
 
         // Punktescala aktualisieren
@@ -128,7 +162,7 @@
         // Timer starten
         function startTimer() {
             clearInterval(countdown);
-            timeLeft = 10;
+            timeLeft = 180;
             updateTimer();
             document.body.classList.remove('time-up');
             countdown = setInterval(() => {
